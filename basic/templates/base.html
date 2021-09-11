@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="{% block html_lang %}{{ DEFAULT_LANG }}{% endblock html_lang %}">
+
+<head>
+       {% block head %}
+       <title>{% block title %}{{ SITENAME }}{% endblock title %}</title>
+       <meta charset="utf-8" />
+       <meta name="generator" content="Pelican" />
+       <meta name="viewport" content="width=device-width, initial-scale=1">
+
+       <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&family=Ubuntu&display=swap" rel="stylesheet">
+
+       <link rel="stylesheet" type="text/css"
+              href="{{ SITEURL }}/theme/node_modules/bootstrap/dist/css/bootstrap.min.css" />
+
+       <link rel="stylesheet" type="text/css" href="{{ SITEURL }}/theme/css/style.css" />
+
+       {% if FEED_ALL_ATOM %}
+       <link href="{{ FEED_DOMAIN }}/{% if FEED_ALL_ATOM_URL %}{{ FEED_ALL_ATOM_URL }}{% else %}{{ FEED_ALL_ATOM }}{% endif %}"
+              type="application/atom+xml" rel="alternate" title="{{ SITENAME }} Full Atom Feed" />
+       {% endif %}
+       {% if FEED_ALL_RSS %}
+       <link href="{{ FEED_DOMAIN }}/{% if FEED_ALL_RSS_URL %}{{ FEED_ALL_RSS_URL }}{% else %}{{ FEED_ALL_RSS }}{% endif %}"
+              type="application/rss+xml" rel="alternate" title="{{ SITENAME }} Full RSS Feed" />
+       {% endif %}
+       {% if FEED_ATOM %}
+       <link href="{{ FEED_DOMAIN }}/{%if FEED_ATOM_URL %}{{ FEED_ATOM_URL }}{% else %}{{ FEED_ATOM }}{% endif %}"
+              type="application/atom+xml" rel="alternate" title="{{ SITENAME }} Atom Feed" />
+       {% endif %}
+       {% if FEED_RSS %}
+       <link href="{{ FEED_DOMAIN }}/{% if FEED_RSS_URL %}{{ FEED_RSS_URL }}{% else %}{{ FEED_RSS }}{% endif %}"
+              type="application/rss+xml" rel="alternate" title="{{ SITENAME }} RSS Feed" />
+       {% endif %}
+       {% if CATEGORY_FEED_ATOM and category %}
+       <link href="{{ FEED_DOMAIN }}/{% if CATEGORY_FEED_ATOM_URL %}{{ CATEGORY_FEED_ATOM_URL.format(slug=category.slug) }}{% else %}{{ CATEGORY_FEED_ATOM.format(slug=category.slug) }}{% endif %}"
+              type="application/atom+xml" rel="alternate" title="{{ SITENAME }} Categories Atom Feed" />
+       {% endif %}
+       {% if CATEGORY_FEED_RSS and category %}
+       <link href="{{ FEED_DOMAIN }}/{% if CATEGORY_FEED_RSS_URL %}{{ CATEGORY_FEED_RSS_URL.format(slug=category.slug) }}{% else %}{{ CATEGORY_FEED_RSS.format(slug=category.slug) }}{% endif %}"
+              type="application/rss+xml" rel="alternate" title="{{ SITENAME }} Categories RSS Feed" />
+       {% endif %}
+       {% if TAG_FEED_ATOM and tag %}
+       <link href="{{ FEED_DOMAIN }}/{% if TAG_FEED_ATOM_URL %}{{ TAG_FEED_ATOM_URL.format(slug=tag.slug) }}{% else %}{{ TAG_FEED_ATOM.format(slug=tag.slug) }}{% endif %}"
+              type="application/atom+xml" rel="alternate" title="{{ SITENAME }} Tags Atom Feed" />
+       {% endif %}
+       {% if TAG_FEED_RSS and tag %}
+       <link href="{{ FEED_DOMAIN }}/{% if TAG_FEED_RSS_URL %}{{ TAG_FEED_RSS_URL.format(slug=tag.slug) }}{% else %}{{ TAG_FEED_RSS.format(slug=tag.slug) }}{% endif %}"
+              type="application/rss+xml" rel="alternate" title="{{ SITENAME }} Tags RSS Feed" />
+       {% endif %}
+       {% endblock head %}
+</head>
+
+<body id="index" class="home">
+       <!--Header-->
+       <nav class="navbar fixed-top navbar-expand-lg">
+              <div class="container d-flex">
+                     <a class="navbar-brand" href="{{ SITEURL }}/">{{ SITENAME }}{% if SITESUBTITLE %}
+                            <strong>{{ SITESUBTITLE }}</strong>{% endif %}</a>
+                     <div class="menu" data-toggler="true">
+                            <ul class="navbar-nav">
+                                   {% for title, link in MENUITEMS %}
+                                   <li class="nav-item">
+                                          <a class="nav-link active" aria-current="page" href="{{link}}">{{title}}</a>
+                                   </li>
+                                   {% endfor %}
+                                   {% if DISPLAY_PAGES_ON_MENU %}
+                                   {% for p in pages %}
+                                   <li class="nav-item {% if p == page %} active {% endif %}">
+                                          <a class="nav-link active" aria-current="page"
+                                                 href="{{ SITEURL }}/{{ p.url }}">{{ p.title }}</a>
+                                   </li>
+                                   {% endfor %}
+                                   {% endif %}
+                            </ul>
+                     </div>
+                     <div class="navbar-social">
+                            <ul class="social-links">
+                                   {% for social, link in SOCIAL  %}
+                                   <li>
+                                          <a href="{{link}}">
+                                                 <img src="{{ SITEURL }}/theme/icons/{{social}}.svg"
+                                                        alt="Juliomdev {{social}}">
+                                          </a>
+                                   </li>
+                                   {% endfor %}
+                            </ul>
+                     </div>
+                     <button class="navbar-toggler" type="button">
+                            <img src="{{ SITEURL }}/theme/icons/menu.svg" class="menu-icon" alt="Menu icon">
+                     </button>
+              </div>
+       </nav>
+       <!--End Header-->
+
+       <div class="content">
+              {% block content %}
+              {% endblock %}
+       </div>
+
+       <footer>
+              <p>© Julio Martínez - 2020</p>
+       </footer>
+
+
+       <script src="{{ SITEURL }}/theme/node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
+       <script>
+              document.querySelector('.navbar-toggler').addEventListener('click', function () {
+
+
+                     let menu = document.querySelector('.menu');
+
+                     let classList = menu.className.split(" ");
+
+                     let className = '';
+
+                     if (classList[classList.length - 1] === 'menu') {
+                            className = 'open';
+                     } else {
+                            className = classList[classList.length - 1] === 'open' ? 'close' : 'open';
+                     }
+
+                     menu.className = "menu " + className;
+
+              })
+       </script>
+</body>
+
+</html>

@@ -1,0 +1,92 @@
+{% extends "base.html" %}
+{% block content %}
+{% if DISPLAY_CATEGORIES_ON_MENU %}
+<section class="header">
+    <div class="jumbotron p-2 d-flex flex-column justify-content-center align-center">
+        <h1>Julio Martínez </h1>
+        <h2 class="">Fullstack web developer</h2>
+    </div>
+    <svg width="500" height="80" viewBox="0 0 500 80" preserveAspectRatio="none">
+        <path d="M0,0 L0,40 Q250,80 500,40 L500,0 Z" fill="#4299e1" />
+    </svg>
+</section>
+
+<div class="container about my-4">
+    <div class="row">
+        <div class="col-12 col-lg-4 d-flex justify-content-center">
+            <img class="img-fluid" src="{{ SITEURL }}/theme/images/profile.jpg"
+            alt="Juliomdev {{social}}">
+        </div>
+        <div class="col-12 col-lg-8">
+            <p class="fs-2">Desarrollador especializado en Django con conocimientos en tecnologías web ( HTML, CSS), JavaScript, Python y Php. Experiencia en backend y frontend desde 2017. Venezuela. 15 Junio de 1996</p>
+        </div>
+    </div>
+</div>
+
+<!--Categories-->
+<div class="container categories my-4">
+    <div class="row">
+        <div class="col-12 text-center">
+            <h2>Categorías</h2>
+        </div>
+    </div>
+    <div class="row justify-content-center">
+        <div class="col-12 col-md-8">
+            <ul class="nav justify-content-center">
+                {% for cat, null in categories %}
+                <li class="nav-item">
+                    <a class="nav-link {% if cat == category %} active {% endif %}" aria-current="page"
+                        href="{{ SITEURL }}/{{ cat.url }}"><span class="badge bg-secondary">{{ cat }}</span></a>
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+</div>
+<!--End Categories-->
+{% endif %}
+<!--Content-->
+<section id="content" class="container">
+    <div class="row">
+        <div class="col-12 text-center">
+            {% block content_title %}
+            <h2>Últimos artículos</h2>
+            {% endblock %}
+        </div>
+    </div>
+    <div class="row">
+        {% for article in articles_page.object_list %}
+        <div class="col-12">
+            <article class="item my-2 shadow bg-white rounded">
+                {% if article.cover_image_url %}
+                <a href="{{ SITEURL }}/{{ article.url }}" class="item-image">
+                    <img src="{{article.cover_image_url}}" class="rounded" alt="{{ article.title|striptags }}">
+                </a>
+                {% endif %}
+                <div class="p-2 item-content">
+
+                    {% if article.tags %}
+                    {% for tag in  article.tags|sort %}
+                    <a href="{{tag.url}}" class="tag">
+                        <span class="">#{{tag}}</span>
+                    </a>
+                    {% endfor %}
+                    {% endif %}
+
+                    <a href="{{ SITEURL }}/{{ article.url }}" rel="bookmark"
+                        title="Permalink to {{ article.title|striptags }}" class="title">
+                        <h5 class="">{{ article.title }}</h5>
+                    </a>
+                    <p class="">{{ article.summary }}</p>
+
+                    <a class="author" href="{{ SITEURL }}/{{ article.author.url }}">{{ article.author }}</a>
+                    <br>
+                    <span class="date">{{ article.locale_date }}</span>
+                </div>
+            </article>
+        </div>
+        {% endfor %}
+    </div>
+</section>
+<!--End Content-->
+{% endblock content %}
